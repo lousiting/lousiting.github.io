@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我们结婚啦！</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', '微软雅黑', sans-serif;
+            background-color: #fff8f8;
+            color: #5a3636;
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0;
+            position: relative;
+        }
+        
+        /* 顶部封面区域 */
+        .cover {
+            height: 100vh;
+            background: url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2070') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        .cover::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        /* 花瓣效果 */
+        .petal {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        .petal1 {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23d48a8a"><path d="M12,1c-4.97,0-9,4.03-9,9c0,4.632,3.501,8.443,8,8.941V23h2v-4.059c4.499-0.498,8-4.309,8-8.941C21,5.03,16.97,1,12,1z"/></svg>');
+        }
+        
+        .petal2 {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23e06666"><path d="M12,21.35l-1.45-1.32C5.4,15.36,2,12.28,2,8.5C2,5.42,4.42,3,7.5,3c1.74,0,3.41,0.81,4.5,2.09C13.09,3.81,14.76,3,16.5,3C19.58,3,22,5.42,22,8.5c0,3.78-3.4,6.86-8.55,11.54L12,21.35z"/></svg>');
+        }
+        
+        .petal3 {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%239e5e5e"><path d="M17.66 8L12 2.35 6.34 8C4.78 9.56 4 11.64 4 13.64s0.78 4.11 2.34 5.67 3.61 2.35 5.66 2.35 4.1-0.79 5.66-2.35S20 15.64 20 13.64 19.22 9.56 17.66 8z"/></svg>');
+        }
+        
+        @keyframes petalsfall {
+            0% {
+                transform: translateY(-5vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(105vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 装饰元素 */
+        .decoration {
+            position: absolute;
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .heart-decoration {
+            top: 10%;
+            right: 5%;
+            font-size: 3rem;
+            color: #d48a8a;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .flower-decoration {
+            bottom: 10%;
+            left: 5%;
+            font-size: 2.5rem;
+            color: #9e5e5e;
+            animation: float-rotate 8s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        @keyframes float-rotate {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(180deg); }
+            100% { transform: translateY(0) rotate(360deg); }
+        }
+        
+        .cover-content {
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        
+        .cover-title {
+            font-size: 2.5rem;
+            color: #d48a8a;
+            margin-bottom: 20px;
+            font-weight: normal;
+            font-family: 'STXingkai', '华文行楷', serif;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            animation: zoomIn 1.2s;
+        }
+        
+        .couple-names-large {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #9e5e5e;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: fadeIn 1.5s;
+        }
+        
+        .wedding-date-large {
+            font-size: 1.8rem;
+            margin: 30px 0;
+            color: #7d5a5a;
+            animation: fadeIn 1.8s;
+        }
+        
+        /* 优化的按钮样式 */
+        .elegant-button {
+            display: inline-block;
+            padding: 12px 35px;
+            margin-top: 30px;
+            background: linear-gradient(135deg, #f1b5b5, #d48a8a);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(212, 138, 138, 0.4);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            will-change: transform;
+        }
+        
+        .elegant-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0));
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+        
+        .elegant-button:hover:before {
+            left: 100%;
+        }
+        
+        .elegant-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 138, 138, 0.5);
+        }
+        
+        .elegant-button .btn-text {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .elegant-button .icon {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .elegant-button:hover .icon {
+            transform: translateX(5px);
+        }
+        
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #9e5e5e;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            z-index: 2;
+        }
+        
+        /* 主要内容区域 - 优化性能 */
+        .section {
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            will-change: opacity, transform;
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section-light {
+            background-color: #fff8f8;
+        }
+        
+        .section-dark {
+            background-color: #f8efef;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: #d48a8a;
+            margin-bottom: 30px;
+            font-weight: normal;
+            font-family: 'STXingkai', '华文行楷', serif;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background-color: #d48a8a;
+            transition: all 0.8s ease;
+            transform: translateX(-50%);
+        }
+        
+        .section.visible .section-title::after {
+            width: 70%;
+        }
+        
+        .content-box {
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            transition: transform 0.5s ease;
+            will-change: transform;
+        }
+        
+        .content-box:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* 结婚照展示区 */
+        .photo-gallery {
+            margin: 30px 0;
+        }
+        
+        .photo-frame {
+            position: relative;
+            margin-bottom: 20px;
+            padding: 8px;
+        }
+        
+        .photo-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px dashed #d48a8a;
+            border-radius: 12px;
+            animation: pulse 3s infinite ease-in-out;
+        }
+        
+        .main-photo {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            will-change: transform;
+        }
+        
+        .main-photo:hover {
+            transform: scale(1.02);
+        }
+        
+        .photo-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .small-photo {
+            width: calc(33% - 10px);
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            will-change: transform;
+        }
+        
+        .small-photo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* 模态窗口 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .modal.show {
+            opacity: 1;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            transform: scale(0.9);
+            transition: transform 0.4s ease;
+            will-change: transform;
+        }
+        
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            color: white;
+            font-size: 35px;
+            cursor: pointer;
+        }
+        
+        /* 我们的故事 */
+        .timeline {
+            position: relative;
+            max-width: 500px;
+            margin: 30px auto;
+            text-align: left;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: #d48a8a;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .timeline-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #d48a8a;
+            border: 3px solid #f8efef;
+            border-radius: 50%;
+            left: 13px;
+            top: 15px;
+            z-index: 1;
+            transition: background-color 0.3s ease;
+        }
+        
+        .timeline-item:hover::after {
+            background-color: #e06666;
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            color: #9e5e5e;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-content {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        /* 新增照片故事 */
+        .story-photos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .story-photo {
+            width: calc(50% - 15px);
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .story-photo:hover {
+            transform: translateY(-5px);
+        }
+        
+        .story-photo img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .story-photo:hover img {
+            transform: scale(1.05);
+        }
+        
+        .story-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            background-color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+            color: #5a3636;
+        }
+        
+        /* 婚礼信息 */
+        .wedding-info {
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .info-item {
+            margin: 25px 0;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        .info-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .info-icon {
+            font-size: 2rem;
+            color: #d48a8a;
+            margin-bottom: 10px;
+        }
+        
+        .info-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #9e5e5e;
+            margin-bottom: 5px;
+        }
+        
+        /* 婚礼日程 */
+        /* .schedule {
+            max-width: 500px;
+            margin: 30px auto;
+        }
+        
+        .schedule-item {
+            display: flex;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .schedule-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .schedule-time {
+            width: 80px;
+            padding: 10px;
+            background-color: #d48a8a;
+            color: white;
+            font-weight: bold;
+            border-radius: 8px 0 0 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .schedule-event {
+            flex: 1;
+            padding: 10px 15px;
+            background-color: white;
+            border-radius: 0 8px 8px 0;
+        } */
+        .schedule {
+            max-width: 500px;
+            margin: 30px auto;
+        }
+        
+        .schedule-item {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+        }
+        
+        .schedule-time {
+            font-weight: bold;
+            color: #d48a8a;
+            width: 80px;
+            text-align: center;
+        }
+        
+        .schedule-event {
+            flex: 1;
+            text-align: left;
+            border-left: 1px dashed #d48a8a;
+            padding-left: 15px;
+        }
+        /* 温馨提示 */
+        .tips {
+            background-color: #f9f1f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .tips-title {
+            color: #9e5e5e;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .tips-list {
+            list-style-type: none;
+            text-align: left;
+            padding-left: 10px;
+        }
+        
+        .tips-list li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .tips-list li:before {
+            content: '❤';
+            position: absolute;
+            left: 0;
+            color: #d48a8a;
+            font-size: 0.8rem;
+        }
+        
+        /* 倒计时 */
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .countdown-item {
+            width: 70px;
+            padding: 10px;
+            background-color: #d48a8a;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .countdown-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .countdown-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .countdown-label {
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        /* 祝福留言 */
+        .wishes-board {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .wishes-title {
+            color: #9e5e5e;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .wish-messages {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f9f1f1;
+            border-radius: 10px;
+        }
+        
+        .wish-message {
+            background-color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        
+        .wish-author {
+            text-align: right;
+            font-style: italic;
+            font-size: 0.9rem;
+            color: #9e5e5e;
+            margin-top: 5px;
+        }
+        
+        /* .wish-form {
+            margin-top: 20px;
+        }
+        
+        .wish-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #d48a8a;
+            border-radius: 5px;
+            font-family: inherit;
+            resize: none;
+        } */
+        .wish-form {
+    margin-bottom: 20px;
+}
+
+#wishInput {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
+    min-height: 80px;
+    font-family: inherit;
+    resize: none;
+}
+
+.wish-form-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#wishName {
+    flex-grow: 1;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin-right: 15px;
+    height: 42px;  
+     width: 60%;
+}
+        
+        .wish-submit {
+            background-color: #d29393;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 25px;
+            cursor: pointer;
+            font-size: 16px;
+         
+            /* transition: background-color 0.3s; */
+            transition: all 0.3s ease;
+        }
+        
+        .wish-submit:hover {
+            background-color: #c07878;
+        }
+        
+        /* RSVP区域 */
+        .rsvp-section {
+            padding: 60px 20px;
+            background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), 
+                        url('https://images.unsplash.com/photo-1460364157752-926555421a7e?q=80&w=2070') no-repeat center center;
+            background-size: cover;
+            text-align: center;
+        }
+        
+        .rsvp-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .rsvp {
+            margin: 30px 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #d48a8a;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            background-color: #c07878;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid #d48a8a;
+            color: #d48a8a;
+        }
+        
+        .btn-outline:hover {
+            background-color: #d48a8a;
+            color: white;
+        }
+        
+        /* 页脚 */
+        .footer {
+            padding: 30px 20px;
+            background-color: #f0e6e6;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #8a8a8a;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .footer-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        
+        .footer-heart {
+            position: absolute;
+            color: #d48a8a;
+            opacity: 0.1;
+        }
+        
+        .footer p {
+            margin: 10px 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .heart {
+            color: #e06666;
+            font-size: 1.5rem;
+            margin: 0 8px;
+            animation: heartBeat 1.3s infinite ease-in-out;
+            display: inline-block;
+        }
+        
+        /* 页面指示器 */
+        .page-indicator {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .indicator-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(212, 138, 138, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .indicator-dot.active {
+            background-color: #d48a8a;
+            transform: scale(1.3);
+        }
+        
+        /* 音乐控制 */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(212, 138, 138, 0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+        
+        .music-icon {
+            color: white;
+            font-size: 1.4rem;
+        }
+        
+        .playing {
+            animation: rotate 3s linear infinite;
+        }
+        
+        /* 分隔线 */
+        .divider {
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #d48a8a, transparent);
+            margin: 25px auto;
+        }
+        
+        /* 页面过渡动画 */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            z-index: 1000;
+            transform: translateY(100%);
+            transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+            pointer-events: none;
+            will-change: transform;
+        }
+        
+        .page-transition.active {
+            transform: translateY(0);
+        }
+        
+        /* 动画关键帧 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.3); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.3); }
+            70% { transform: scale(1); }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-20px) translateX(-50%); }
+            60% { transform: translateY(-10px) translateX(-50%); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.4; }
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .cover-title {
+                font-size: 2rem;
+            }
+            
+            .couple-names-large {
+                font-size: 2.2rem;
+            }
+            
+            .wedding-date-large {
+                font-size: 1.5rem;
+            }
+            
+            .section {
+                padding: 40px 15px;
+            }
+            
+            .content-box {
+                padding: 20px;
+            }
+            
+            .page-indicator {
+                right: 10px;
+            }
+            
+            .indicator-dot {
+                width: 8px;
+                height: 8px;
+            }
+            
+            .story-photo {
+                width: calc(100% - 15px);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .cover-title {
+                font-size: 1.7rem;
+            }
+            
+            .couple-names-large {
+                font-size: 1.8rem;
+            }
+            
+            .wedding-date-large {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .small-photo {
+                width: calc(50% - 10px);
+                height: 100px;
+            }
+            
+            .timeline::after {
+                left: 15px;
+            }
+            
+            .timeline-item {
+                padding: 10px 30px;
+            }
+            
+            .timeline-item::after {
+                left: 8px;
+            }
+            
+            .schedule-time {
+                width: 70px;
+            }
+            
+            .countdown-item {
+                width: 60px;
+                padding: 8px;
+            }
+            
+            .countdown-number {
+                font-size: 1.5rem;
+            }
+            
+            .elegant-button {
+                padding: 10px 25px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面过渡动画 -->
+    <div class="page-transition" id="pageTransition"></div>
+    
+    <div class="container">
+        <!-- 封面区域 -->
+        <div class="cover" id="section-cover">
+            <div class="decoration heart-decoration">
+                <i class="fas fa-heart"></i>
+            </div>
+            <div class="decoration flower-decoration">
+                <i class="fas fa-fan"></i>
+            </div>
+            
+            <div class="cover-content">
+                <h1 class="cover-title">我们结婚啦</h1>
+                <div class="couple-names-large">
+                    <span class="groom">小赖</span>
+                    <span class="heart">♥</span>
+                    <span class="bride">小杨</span>
+                </div>
+                <p class="wedding-date-large">2028年10月1日</p>
+                
+                <a href="#section-photos" class="elegant-button" id="startJourney">
+                    <span class="btn-text">开始浏览</span>
+                    <span class="icon"><i class="fas fa-arrow-right"></i></span>
+                </a>
+            </div>
+            <div class="scroll-down" id="scrollDown">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+
+        <!-- 结婚照展示区 -->
+        <div class="section section-light" id="section-photos">
+            <div class="decoration heart-decoration">
+                <i class="fas fa-heart"></i>
+            </div>
+            <h2 class="section-title">最美的瞬间</h2>
+            <div class="content-box">
+                <div class="photo-gallery">
+                    <div class="photo-frame">
+                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=2787" alt="结婚照" class="main-photo" id="mainPhoto">
+                    </div>
+                    <div class="photo-grid">
+                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=2787" alt="照片1" class="small-photo">
+                        <img src="https://images.unsplash.com/photo-1528825871115-3581a5387919?q=80&w=2830" alt="照片2" class="small-photo">
+                        <img src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?q=80&w=2070" alt="照片3" class="small-photo">
+                        <img src="https://images.unsplash.com/photo-1524824267900-2fa9cbf7a506?q=80&w=2070" alt="照片4" class="small-photo">
+                        <img src="https://images.unsplash.com/photo-1548199569-3e1c6aa8f469?q=80&w=2069" alt="照片5" class="small-photo">
+                        <img src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=80&w=2070" alt="照片6" class="small-photo">
+                    </div>
+                </div>
+                <p>执子之手，与子偕老</p>
+            </div>
+        </div>
+
+        <!-- 我们的故事 -->
+        <div class="section section-dark" id="section-story">
+            <div class="decoration flower-decoration">
+                <i class="fas fa-fan"></i>
+            </div>
+            <h2 class="section-title">我们的故事</h2>
+            <div class="content-box">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2023年5月</div>
+                        <div class="timeline-content">
+                            <p>缘分的初遇，我们在朋友聚会上相识，那一刻便注定了未来。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2023年10月</div>
+                        <div class="timeline-content">
+                            <p>在春暖花开的季节，我们确定了恋爱关系，开始了甜蜜的约会时光。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2024年12月</div>
+                        <div class="timeline-content">
+                            <p>一起旅行，一起工作，一起生活，我们共同经历了太多美好与挑战。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2027年10月</div>
+                        <div class="timeline-content">
+                            <p>在浪漫的日落海滩，他单膝跪地，许下了一生的承诺。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2028年10月</div>
+                        <div class="timeline-content">
+                            <p>终于，我们将携手步入婚姻的殿堂，开始人生新的篇章。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 照片故事 -->
+                <div class="story-photos">
+                    <div class="story-photo">
+                        <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=2787" alt="初次约会">
+                        <div class="story-caption">初次约会，紧张又甜蜜</div>
+                    </div>
+                    <div class="story-photo">
+                        <img src="https://images.unsplash.com/photo-1529333241880-9558d5e5e064?q=80&w=2787" alt="旅行记忆">
+                        <div class="story-caption">一起旅行，留下美好回忆</div>
+                    </div>
+                </div>
+                
+                <div class="divider"></div>
+                <p class="message">
+                    "相遇是缘分，相知是默契，相守是幸福。<br>
+                    我们的故事还在继续，未来的每一页，都希望有你见证。"
+                </p>
+            </div>
+        </div>
+
+        <!-- 倒计时 -->
+        <div class="section section-light" id="section-countdown">
+            <div class="decoration heart-decoration">
+                <i class="fas fa-heart"></i>
+            </div>
+            <h2 class="section-title">幸福倒计时</h2>
+            <div class="content-box">
+                <p>距离我们的婚礼还有</p>
+                <div class="countdown" id="countdown">
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="countdown-days">00</div>
+                        <div class="countdown-label">天</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="countdown-hours">00</div>
+                        <div class="countdown-label">时</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="countdown-minutes">00</div>
+                        <div class="countdown-label">分</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="countdown-seconds">00</div>
+                        <div class="countdown-label">秒</div>
+                    </div>
+                </div>
+                <p>我们期待与您共同见证这一刻</p>
+            </div>
+        </div>
+
+        <!-- 婚礼信息 -->
+        <div class="section section-dark" id="section-info">
+            <div class="decoration flower-decoration">
+                <i class="fas fa-fan"></i>
+            </div>
+            <h2 class="section-title">婚礼信息</h2>
+            <div class="content-box">
+                <div class="wedding-info">
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="info-title">日期时间</div>
+                        <p>2028年10月1日 星期日</p>
+                        <p>上午10:30 - 下午14:30</p>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="info-title">婚礼地点</div>
+                        <p>幸福大酒店 | 星光厅</p>
+                        <p>北京市朝阳区幸福路88号</p>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="info-title">婚宴</div>
+                        <p>中式婚宴 | 12:00开席</p>
+                        <p>特别准备素食选项</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+                <!-- 婚礼日程 -->
+                <div class="section section-light" id="section-schedule">
+                    <div class="decoration heart-decoration">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h2 class="section-title">婚礼流程</h2>
+                    <div class="content-box">
+                        <div class="schedule">
+                            <div class="schedule-item">
+                                <div class="schedule-time">10:00</div>
+                                <div class="schedule-event">
+                                    <strong>嘉宾签到</strong>
+                                    <p>星光厅入口处</p>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">10:30</div>
+                                <div class="schedule-event">
+                                    <strong>婚礼仪式开始</strong>
+                                    <p>新人入场，宣誓</p>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">11:30</div>
+                                <div class="schedule-event">
+                                    <strong>合影留念</strong>
+                                    <p>新人与来宾合影</p>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">12:00</div>
+                                <div class="schedule-event">
+                                    <strong>婚宴开席</strong>
+                                    <p>敬酒环节</p>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-time">14:00</div>
+                                <div class="schedule-event">
+                                    <strong>甜品与祝福</strong>
+                                    <p>切蛋糕，送祝福</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 温馨提示 -->
+                        <div class="tips">
+                            <h3 class="tips-title">温馨提示</h3>
+                            <ul class="tips-list">
+                                <li>酒店附近有停车场，方便自驾嘉宾停车</li>
+                                <li>我们提供接送巴士，请提前告知需求</li>
+                                <li>婚礼以喜庆红色为主题，建议来宾着喜庆色彩服装</li>
+                                <li>现场有儿童游乐区，欢迎携带小朋友参加</li>
+                                <li>如有特殊饮食需求，请提前告知我们</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- 祝福留言 -->
+                <div class="section section-dark" id="section-wishes">
+                    <div class="decoration flower-decoration">
+                        <i class="fas fa-fan"></i>
+                    </div>
+                    <h2 class="section-title">祝福留言</h2>
+                    <div class="content-box">
+                        <div class="wish-form">
+                            <textarea id="wishInput" placeholder="写下您的祝福..."></textarea>
+                            <input type="text" id="wishName" placeholder="您的姓名">
+                            <button id="wishSubmit" class="btn">发送祝福</button>
+                        </div>
+                        <div class="wish-messages" id="wishMessages">
+                            <!-- 预设祝福 -->
+                            <div class="wish-message">
+                                <p>祝福你们新婚快乐，白头偕老！</p>
+                                <div class="wish-author">— 小李</div>
+                            </div>
+                            <div class="wish-message">
+                                <p>愿你们的爱情，如陈年佳酿，历久弥香。</p>
+                                <div class="wish-author">— 小杨</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- RSVP区域 -->
+                <div class="section section-light" id="section-rsvp">
+                    <div class="decoration heart-decoration">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h2 class="section-title">期待您的到来</h2>
+                    <div class="content-box">
+                        <p>请在9月15日前告知我们您是否能够参加</p>
+                        <div class="rsvp">
+                            <a href="tel:+8618379820420" class="btn">新郎电话</a>
+                            <a href="tel:+8618379820420" class="btn">新娘电话</a>
+                            <a href="#" class="btn btn-outline" id="mapBtn">查看地图</a>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- 页脚 -->
+                <div class="footer">
+                    <div id="footerHearts" class="footer-hearts"></div>
+                    <p>
+                        <span class="groom">小赖</span>
+                        <span class="heart">♥</span>
+                        <span class="bride">小杨</span>
+                    </p>
+                    <p>感谢您见证我们的幸福时刻</p>
+                    <p>2028年10月1日</p>
+                </div>
+            </div>
+    
+            <!-- 照片预览模态窗口 -->
+            <div class="modal" id="photoModal">
+                <span class="close-modal">&times;</span>
+                <img class="modal-content" id="modalImg">
+            </div>
+            
+            <!-- 页面指示器 -->
+            <div class="page-indicator" id="pageIndicator"></div>
+            
+            <!-- 音乐控制 -->
+            <div class="music-control" id="musicControl">
+                <span class="music-icon"><i class="fas fa-music"></i></span>
+            </div>
+            
+            <!-- 背景音乐 -->
+            <audio id="bgMusic" loop>
+                <source src="http://ss6mg6cg6.hn-bkt.clouddn.com/%E8%87%B3%E5%B0%91%E8%BF%98%E6%9C%89%E4%BD%A0-%E6%9E%97%E5%BF%86%E8%8E%B2%231qdUN.mp3" type="audio/mpeg">
+                您的浏览器不支持音频元素。
+            </audio>
+        
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // 获取DOM元素
+                    const music = document.getElementById('bgMusic');
+                    const musicControl = document.getElementById('musicControl');
+                    const mapBtn = document.getElementById('mapBtn');
+                    const scrollDown = document.getElementById('scrollDown');
+                    const startJourney = document.getElementById('startJourney');
+                    const modal = document.getElementById('photoModal');
+                    const modalImg = document.getElementById('modalImg');
+                    const closeModal = document.querySelector('.close-modal');
+                    const mainPhoto = document.getElementById('mainPhoto');
+                    const smallPhotos = document.querySelectorAll('.small-photo');
+                    const wishInput = document.getElementById('wishInput');
+                    const wishName = document.getElementById('wishName');
+                    const wishSubmit = document.getElementById('wishSubmit');
+                    const wishMessages = document.getElementById('wishMessages');
+                    const pageTransition = document.getElementById('pageTransition');
+                    const sections = document.querySelectorAll('.section');
+                    const pageIndicator = document.getElementById('pageIndicator');
+                    const footerHearts = document.getElementById('footerHearts');
+                    const cover = document.getElementById('section-cover');
+                    
+                    // 创建页面指示器
+                    function createPageIndicator() {
+                        sections.forEach((section, index) => {
+                            const dot = document.createElement('div');
+                            dot.classList.add('indicator-dot');
+                            dot.setAttribute('data-index', index);
+                            
+                            dot.addEventListener('click', () => {
+                                smoothScrollTo(`#${section.id}`);
+                            });
+                            
+                            pageIndicator.appendChild(dot);
+                        });
+                    }
+                    
+                    // 更新指示器状态
+                    function updateIndicator() {
+                        const dots = document.querySelectorAll('.indicator-dot');
+                        const scrollPosition = window.scrollY + window.innerHeight / 2;
+                        
+                        sections.forEach((section, index) => {
+                            const rect = section.getBoundingClientRect();
+                            const sectionTop = rect.top + window.scrollY;
+                            const sectionBottom = sectionTop + rect.height;
+                            
+                            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                                dots[index].classList.add('active');
+                            } else {
+                                dots[index].classList.remove('active');
+                            }
+                        });
+                    }
+                    
+                    // 创建花瓣
+                    function createPetals() {
+                        const cover = document.getElementById('section-cover');
+                        const petalTypes = ['petal1', 'petal2', 'petal3'];
+                        const petalCount = 20;
+                        
+                        for (let i = 0; i < petalCount; i++) {
+                            const petal = document.createElement('div');
+                            const petalType = petalTypes[Math.floor(Math.random() * petalTypes.length)];
+                            
+                            petal.classList.add('petal', petalType);
+                            
+                            // 随机位置和大小
+                            petal.style.left = `${Math.random() * 100}%`;
+                            petal.style.width = `${Math.random() * 15 + 10}px`;
+                            petal.style.height = petal.style.width;
+                            
+                            // 随机动画时间和延迟
+                            const animationDuration = Math.random() * 10 + 10;
+                            const animationDelay = Math.random() * 15;
+                            
+                            petal.style.animation = `petalsfall ${animationDuration}s linear ${animationDelay}s infinite`;
+                            
+                            cover.appendChild(petal);
+                        }
+                    }
+                    
+                    // 创建页脚装饰爱心
+                    function createFooterHearts() {
+                        footerHearts.innerHTML = '';
+                        for (let i = 0; i < 20; i++) {
+                            const heart = document.createElement('div');
+                            heart.classList.add('footer-heart');
+                            heart.innerHTML = '♥';
+                            heart.style.fontSize = `${Math.random() * 20 + 10}px`;
+                            heart.style.left = `${Math.random() * 100}%`;
+                            heart.style.top = `${Math.random() * 100}%`;
+                            heart.style.opacity = Math.random() * 0.2 + 0.1;
+                            footerHearts.appendChild(heart);
+                        }
+                    }
+                    
+                    // 页面滚动监听，触发动画
+                    function handleScroll() {
+                        updateIndicator();
+                        
+                        // 检查每个部分的可见性并添加动画
+                        sections.forEach(section => {
+                            const rect = section.getBoundingClientRect();
+                            const windowHeight = window.innerHeight;
+                            
+                            // 如果部分至少有一半在视口中可见
+                            if (rect.top < windowHeight * 0.8 && rect.bottom > windowHeight * 0.2) {
+                                section.classList.add('visible');
+                            }
+                        });
+                    }
+                    
+                    // 显示页面过渡动画
+                    function showPageTransition() {
+                        pageTransition.classList.add('active');
+                    }
+                    
+                    // 隐藏页面过渡动画
+                    function hidePageTransition() {
+                        pageTransition.classList.remove('active');
+                    }
+                    
+                    // 平滑滚动到指定部分
+                    function smoothScrollTo(target) {
+                        // 显示过渡动画
+                        showPageTransition();
+                        
+                        setTimeout(() => {
+                            const element = document.querySelector(target);
+                            const topOffset = element.offsetTop;
+                            
+                            window.scrollTo({
+                                top: topOffset,
+                                behavior: 'instant'
+                            });
+                            
+                            setTimeout(() => {
+                                // 隐藏过渡动画
+                                hidePageTransition();
+                            }, 500);
+                        }, 500);
+                    }
+                    
+                    // 更新倒计时
+                    function updateCountdown() {
+                        const weddingDate = new Date('2028-10-01T10:30:00');
+                        const now = new Date();
+                        const diff = weddingDate - now;
+                        
+                        if (diff > 0) {
+                            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                            
+                            document.getElementById('countdown-days').textContent = days.toString().padStart(2, '0');
+                            document.getElementById('countdown-hours').textContent = hours.toString().padStart(2, '0');
+                            document.getElementById('countdown-minutes').textContent = minutes.toString().padStart(2, '0');
+                            document.getElementById('countdown-seconds').textContent = seconds.toString().padStart(2, '0');
+                        }
+                    }
+                    
+                    // 处理音乐播放/暂停
+                    musicControl.addEventListener('click', function() {
+                        if (music.paused) {
+                            music.play();
+                            musicControl.classList.add('playing');
+                        } else {
+                            music.pause();
+                            musicControl.classList.remove('playing');
+                        }
+                    });
+                    
+                    // 用户交互后自动播放音乐
+                    document.body.addEventListener('click', function() {
+                        if (music.paused) {
+                            music.play().catch(e => {
+                                console.log('自动播放被阻止，请点击音乐按钮手动播放');
+                            });
+                            musicControl.classList.add('playing');
+                        }
+                    }, { once: true });
+                    
+                    // 滚动到下一部分
+                    scrollDown.addEventListener('click', function() {
+                        smoothScrollTo('#section-photos');
+                    });
+                    
+                    // 开始浏览按钮点击事件
+                    startJourney.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        smoothScrollTo('#section-photos');
+                    });
+                    
+                    // 地图按钮点击事件
+                    mapBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        alert('地图功能即将上线，敬请期待！');
+                    });
+                    
+                    // 照片预览功能
+                    function openModal(imgSrc) {
+                        modal.style.display = 'flex';
+                        setTimeout(() => {
+                            modal.classList.add('show');
+                        }, 10);
+                        modalImg.src = imgSrc;
+                    }
+                    
+                    mainPhoto.addEventListener('click', function() {
+                        openModal(this.src);
+                    });
+                    
+                    smallPhotos.forEach(photo => {
+                        photo.addEventListener('click', function() {
+                            // 更新主照片
+                            mainPhoto.src = this.src;
+                            mainPhoto.alt = this.alt;
+                            
+                            // 同时打开模态窗口
+                            openModal(this.src);
+                        });
+                    });
+                    
+                    closeModal.addEventListener('click', function() {
+                        modal.classList.remove('show');
+                        setTimeout(() => {
+                            modal.style.display = 'none';
+                        }, 500);
+                    });
+                    
+                    // 点击模态窗口背景关闭
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === modal) {
+                            modal.classList.remove('show');
+                            setTimeout(() => {
+                                modal.style.display = 'none';
+                            }, 500);
+                        }
+                    });
+                    
+                    // 处理祝福留言提交
+                    wishSubmit.addEventListener('click', function() {
+                        const message = wishInput.value.trim();
+                        const name = wishName.value.trim();
+                        
+                        if (message && name) {
+                            const newWish = document.createElement('div');
+                            newWish.classList.add('wish-message');
+                            newWish.innerHTML = `
+                                <p>${message}</p>
+                                <div class="wish-author">— ${name}</div>
+                            `;
+                            
+                            wishMessages.appendChild(newWish);
+                            
+                            // 清空输入
+                            wishInput.value = '';
+                            wishName.value = '';
+                            
+                            // 滚动到最新的留言
+                            wishMessages.scrollTop = wishMessages.scrollHeight;
+                        } else {
+                            alert('请填写您的祝福和姓名！');
+                        }
+                    });
+                    
+                    // 初始化
+                    window.addEventListener('scroll', handleScroll);
+                    createPageIndicator();
+                    createPetals();
+                    createFooterHearts();
+                    updateCountdown();
+                    setInterval(updateCountdown, 1000);
+                    
+                    // 初始检查可见性
+                    handleScroll();
+                    
+                    // 设置第一个指示器为活动状态
+                    const indicatorDots = document.querySelectorAll('.indicator-dot');
+                    if (indicatorDots.length > 0) {
+                        indicatorDots[0].classList.add('active');
+                    }
+                });
+            </script>
+        </body>
+        </html>
